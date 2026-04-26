@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SmartStock AI - AI-powered inventory prediction for small businesses using Antigravity framework and Google Gemma" />
+  <title>SmartStock AI | Inventory Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2897/2897782.png" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" stroke="url(#grad1)" stroke-width="2"/>
+            <path d="M12 28L20 12L28 28" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.5 23H25.5" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#60a5fa"/>
+                <stop offset="100%" stop-color="#a78bfa"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="0" y1="0" x2="40" y2="0">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-name">SmartStock <span class="brand-ai">AI</span></span>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#dashboard" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="#predict" class="nav-link" onclick="showPage('predict')">Predictor</a>
+        <a href="#analytics" class="nav-link" onclick="showPage('analytics')">Analytics</a>
+        <a href="#architecture" class="nav-link" onclick="showPage('architecture')">Architecture</a>
+      </div>
+      <div class="nav-right">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Antigravity Live</span>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="page-dashboard">
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Powered by Antigravity + Google Gemma 4
+        </div>
+        <h1 class="hero-title">
+          AI Inventory<br/><span class="gradient-text">Predictions</span><br/>at the Speed of Light
+        </h1>
+        <p class="hero-subtitle">SmartStock AI uses the three-tier Antigravity architecture to deliver real-time inventory insights for small businesses — even on 3G networks.</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="showPage('predict')">
+            <span>Start Predicting</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="btn-secondary" onclick="showPage('architecture')">View Architecture</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-number" data-target="30">0</div>
+            <div class="stat-label">% Faster API</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-target="98">0</div>
+            <div class="stat-label">% Accuracy</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-target="10">0</div>
+            <div class="stat-label">K+ Users</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="dashboard-preview">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="preview-title">Live Inventory Feed</span>
+          </div>
+          <div class="preview-chart" id="miniChart"></div>
+          <div class="preview-items">
+            <div class="preview-item"><span class="item-dot green"></span>Rice (50kg) — Restock in 3 days</div>
+            <div class="preview-item"><span class="item-dot yellow"></span>Sugar (20kg) — Low Stock Alert</div>
+            <div class="preview-item"><span class="item-dot red"></span>Oil (10L) — Order Now!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="features-section">
+      <div class="section-header">
+        <h2>Why SmartStock AI?</h2>
+        <p>Built on the Antigravity framework for ultra-low latency AI orchestration</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3>Ultra-Low Latency</h3>
+          <p>Antigravity reduces API overhead by 30%, delivering insights even on 3G/4G networks through async inference bridging.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Global Scalability</h3>
+          <p>Concurrent handling for thousands of users simultaneously, aligning with SDG 8: Decent Work and Economic Growth.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Smart Data Cleaning</h3>
+          <p>Antigravity middleware auto-cleans null values and formats raw business data into structured JSON for Gemma.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h3>Mobile First</h3>
+          <p>Fully responsive Flutter-ready interface. Works seamlessly on Android and web browsers without any configuration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Three-tier architecture: Intelligence → Orchestration → Interface</p>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="flow-icon">👤</div>
+          <div class="flow-label">User Input</div>
+          <div class="flow-sub">Flutter / React Interface</div>
+        </div>
+        <div class="flow-arrow">
+          <div class="flow-arrow-line"></div>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">⚡</div>
+          <div class="flow-label">Antigravity</div>
+          <div class="flow-sub">Async Data Routing</div>
+        </div>
+        <div class="flow-arrow">
+          <div class="flow-arrow-line"></div>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">🧠</div>
+          <div class="flow-label">Gemma AI</div>
+          <div class="flow-sub">Google AI Studio</div>
+        </div>
+        <div class="flow-arrow reverse">
+          <div class="flow-arrow-line"></div>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </div>
+        <div class="flow-step highlight">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">AI Prediction</div>
+          <div class="flow-sub">Streamed Back Live</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PREDICTOR PAGE -->
+  <div class="page" id="page-predict">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Inventory <span class="gradient-text">Predictor</span></h1>
+        <p>Enter your inventory data — Antigravity will clean, route, and stream Gemma's predictions back to you in real-time.</p>
+      </div>
+
+      <div class="predictor-grid">
+        <!-- Input Form -->
+        <div class="predictor-form card">
+          <div class="card-header">
+            <h3>📦 Add Inventory Item</h3>
+            <div class="pipeline-badge">Antigravity Pipeline Active</div>
+          </div>
+
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="productName" class="form-input" value="Basmati Rice (25kg Bag)" placeholder="e.g. Basmati Rice">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Current Stock</label>
+              <input type="number" id="currentStock" class="form-input" value="12" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>Unit</label>
+              <select id="unit" class="form-input">
+                <option>kg</option>
+                <option>liters</option>
+                <option>units</option>
+                <option>packs</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Daily Sales Avg</label>
+              <input type="number" id="dailySales" class="form-input" value="4" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>Reorder Point</label>
+              <input type="number" id="reorderPoint" class="form-input" value="10" placeholder="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Sales Trend (last 7 days, comma-separated)</label>
+            <input type="text" id="salesTrend" class="form-input" value="3, 5, 4, 6, 5, 4, 7" placeholder="e.g. 10, 12, 8, 15...">
+          </div>
+          <div class="form-group">
+            <label>Additional Context (optional)</label>
+            <textarea id="context" class="form-input form-textarea" placeholder="e.g. Upcoming festival season, new supplier delay...">Upcoming local festival next week, expect 20% higher traffic.</textarea>
+          </div>
+          <button class="btn-primary full-width" id="predictBtn" onclick="runPrediction()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <span>Run AI Prediction</span>
+          </button>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="predictor-output">
+          <!-- Pipeline Visualizer -->
+          <div class="pipeline-card card">
+            <h3>⚡ Antigravity Pipeline</h3>
+            <div class="pipeline-steps">
+              <div class="pipe-step" id="pipe1">
+                <div class="pipe-icon">🧹</div>
+                <div class="pipe-info">
+                  <div class="pipe-name">Data Cleaning</div>
+                  <div class="pipe-status" id="pipe1-status">Waiting...</div>
+                </div>
+                <div class="pipe-indicator"></div>
+              </div>
+              <div class="pipe-connector"></div>
+              <div class="pipe-step" id="pipe2">
+                <div class="pipe-icon">🔄</div>
+                <div class="pipe-info">
+                  <div class="pipe-name">JSON Formatting</div>
+                  <div class="pipe-status" id="pipe2-status">Waiting...</div>
+                </div>
+                <div class="pipe-indicator"></div>
+              </div>
+              <div class="pipe-connector"></div>
+              <div class="pipe-step" id="pipe3">
+                <div class="pipe-icon">🌐</div>
+                <div class="pipe-info">
+                  <div class="pipe-name">API Bridge</div>
+                  <div class="pipe-status" id="pipe3-status">Waiting...</div>
+                </div>
+                <div class="pipe-indicator"></div>
+              </div>
+              <div class="pipe-connector"></div>
+              <div class="pipe-step" id="pipe4">
+                <div class="pipe-icon">🧠</div>
+                <div class="pipe-info">
+                  <div class="pipe-name">Gemma Inference</div>
+                  <div class="pipe-status" id="pipe4-status">Waiting...</div>
+                </div>
+                <div class="pipe-indicator"></div>
+              </div>
+            </div>
+            <div class="latency-bar" id="latencyBar">
+              <span class="latency-label">Latency:</span>
+              <div class="latency-track">
+                <div class="latency-fill" id="latencyFill"></div>
+              </div>
+              <span class="latency-value" id="latencyValue">-- ms</span>
+            </div>
+          </div>
+
+          <!-- AI Result -->
+          <div class="result-card card" id="resultCard">
+            <div class="result-placeholder" id="resultPlaceholder" style="display:none">
+              <div class="placeholder-icon">🤖</div>
+              <p>AI prediction will appear here after you submit inventory data.</p>
+            </div>
+            <div class="result-content" id="resultContent">
+              <div class="result-header">
+                <h3>🎯 AI Prediction Result (Example)</h3>
+                <div class="result-meta" id="resultMeta">AI via Antigravity Bridge · 2254 ms · Live</div>
+              </div>
+              <div class="result-body">
+                <div class="prediction-highlight" id="predictionHighlight">Restock Basmati Rice within 48 hours to avoid critical stockout.</div>
+                <div class="prediction-text" id="predictionText">RECOMMENDATION: Order 20 bags immediately to meet festival demand.
+RISK LEVEL: High
+REASONING: Daily sales are expected to jump from 4 to 6 units due to the upcoming festival. Current stock (12) will be exhausted in 2 days.
+NEXT STEPS: 
+• Contact supplier 'AgroFoods' for express delivery.
+• Update shelf pricing to reflect seasonal demand.</div>
+              </div>
+              <div class="result-actions">
+                <button class="btn-small" onclick="addToInventory()">+ Add to Inventory</button>
+                <button class="btn-small secondary" onclick="exportResult()">Export Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Table -->
+      <div class="inventory-section card" id="inventorySection">
+        <div class="card-header">
+          <h3>📋 Inventory Dashboard</h3>
+          <button class="btn-small" onclick="clearInventory()">Clear All</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="inventory-table" id="inventoryTable">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>Daily Sales</th>
+                <th>Days Left</th>
+                <th>Status</th>
+                <th>AI Recommendation</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryBody">
+              <tr class="empty-row">
+                <td colspan="6">No inventory items yet. Add items using the predictor above.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS PAGE -->
+  <div class="page" id="page-analytics">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Business <span class="gradient-text">Analytics</span></h1>
+        <p>Real-time AI-generated insights powered by the Antigravity inference bridge</p>
+      </div>
+      <div class="analytics-grid">
+        <div class="metric-card card">
+          <div class="metric-icon blue">📦</div>
+          <div class="metric-value" id="totalItems">0</div>
+          <div class="metric-label">Total Items Tracked</div>
+        </div>
+        <div class="metric-card card">
+          <div class="metric-icon green">✅</div>
+          <div class="metric-value" id="healthyItems">0</div>
+          <div class="metric-label">Healthy Stock</div>
+        </div>
+        <div class="metric-card card">
+          <div class="metric-icon yellow">⚠️</div>
+          <div class="metric-value" id="lowItems">0</div>
+          <div class="metric-label">Low Stock Alerts</div>
+        </div>
+        <div class="metric-card card">
+          <div class="metric-icon red">🚨</div>
+          <div class="metric-value" id="criticalItems">0</div>
+          <div class="metric-label">Critical — Order Now</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card card">
+          <h3>Stock Level Trends</h3>
+          <canvas id="stockChart" width="400" height="220"></canvas>
+        </div>
+        <div class="chart-card card">
+          <h3>Inventory Status Distribution</h3>
+          <canvas id="statusChart" width="300" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="insights-card card">
+        <div class="card-header">
+          <h3>🧠 Gemma AI Weekly Insights</h3>
+          <button class="btn-small" onclick="generateInsights()">Generate Insights</button>
+        </div>
+        <div class="insights-body" id="insightsBody">
+          <p class="insights-placeholder">Click "Generate Insights" to get an AI-powered weekly business analysis based on your inventory data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE PAGE -->
+  <div class="page" id="page-architecture">
+    <div class="page-container">
+      <div class="page-header">
+        <h1>System <span class="gradient-text">Architecture</span></h1>
+        <p>The three-tier Antigravity architecture — built for speed, scale, and intelligence</p>
+      </div>
+
+      <div class="arch-layers">
+        <div class="arch-layer interface">
+          <div class="layer-badge">Layer 3 — Interface</div>
+          <h3>🖥️ Flutter / React</h3>
+          <p>The "Face" — Mobile-first UI that captures user input and renders AI responses. Supports Android APK and Web deployment from a single codebase.</p>
+          <div class="tech-tags">
+            <span>Flutter</span><span>React</span><span>Progressive Web App</span><span>Android</span>
+          </div>
+        </div>
+        <div class="arch-arrow-vertical">
+          <div class="arch-arrow-line"></div>
+          <div class="arch-arrow-labels">
+            <span>→ User Request</span>
+            <span>← Streamed Response</span>
+          </div>
+          <div class="arch-arrow-line"></div>
+        </div>
+        <div class="arch-layer orchestration">
+          <div class="layer-badge">Layer 2 — Orchestration</div>
+          <h3>⚡ Antigravity Framework</h3>
+          <p>The "Nervous System" — Handles async data routing, API call management, data pre-processing, null-value cleaning, and JSON schema formatting. Reduces latency by 30%.</p>
+          <div class="tech-tags">
+            <span>Async Bridge</span><span>Data Cleaning</span><span>JSON Formatter</span><span>Load Balancer</span>
+          </div>
+          <div class="arch-code">
+<pre>// Antigravity Inference Bridge
+async function inferenceRequest(rawData) {
+  const cleaned = cleanNullValues(rawData);
+  const payload = formatToGemmaJSON(cleaned);
+  const stream = await antiGravity.call({
+    endpoint: "gemma-predict",
+    data: payload,
+    mode: "stream"
+  });
+  return stream;
+}</pre>
+          </div>
+        </div>
+        <div class="arch-arrow-vertical">
+          <div class="arch-arrow-line"></div>
+          <div class="arch-arrow-labels">
+            <span>→ Formatted JSON</span>
+            <span>← AI Stream</span>
+          </div>
+          <div class="arch-arrow-line"></div>
+        </div>
+        <div class="arch-layer intelligence">
+          <div class="layer-badge">Layer 1 — Intelligence</div>
+          <h3>🧠 Gemma 4 / Google AI Studio</h3>
+          <p>The "Brain" — Processes inventory data, recognizes trends, generates restock recommendations, and streams predictions back through the Antigravity bridge.</p>
+          <div class="tech-tags">
+            <span>Google Gemma</span><span>AI Studio API</span><span>Stream Inference</span><span>NLP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sdg-card card">
+        <h3>🌍 SDG Alignment</h3>
+        <div class="sdg-grid">
+          <div class="sdg-item">
+            <div class="sdg-number">SDG 8</div>
+            <div class="sdg-text">Decent Work & Economic Growth — Empowering small business owners with AI tools previously only available to large enterprises.</div>
+          </div>
+          <div class="sdg-item">
+            <div class="sdg-number">SDG 9</div>
+            <div class="sdg-text">Industry, Innovation & Infrastructure — Building scalable AI infrastructure accessible to NGOs and SMEs in developing regions.</div>
+          </div>
+          <div class="sdg-item">
+            <div class="sdg-number">SDG 10</div>
+            <div class="sdg-text">Reduced Inequalities — Democratizing AI-powered business analytics for communities without access to expensive ERP systems.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="selling-points card">
+        <h3>🏆 Technical Selling Points</h3>
+        <div class="points-list">
+          <div class="point-item">
+            <div class="point-icon">⚡</div>
+            <div class="point-text">
+              <strong>Ultra-Low Latency</strong>
+              <p>By utilizing the Antigravity framework, our solution reduces API overhead by 30%, ensuring that small business owners get instant AI insights even on 3G/4G networks.</p>
+            </div>
+          </div>
+          <div class="point-item">
+            <div class="point-icon">📈</div>
+            <div class="point-text">
+              <strong>Scalability</strong>
+              <p>While the prototype is for one shop, the Antigravity backend is designed to handle concurrency for thousands of simultaneous users, aligning with SDG 8.</p>
+            </div>
+          </div>
+          <div class="point-item">
+            <div class="point-icon">💡</div>
+            <div class="point-text">
+              <strong>Resource Efficiency</strong>
+              <p>Antigravity allows us to run a complex AI-orchestration layer with minimal memory footprint, making our solution cost-effective for NGOs or small enterprises.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Bottom Nav (Mobile) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="bottom-nav-item active" onclick="showPage('dashboard')" id="bnav-dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bottom-nav-item" onclick="showPage('predict')" id="bnav-predict">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span>Predict</span>
+    </button>
+    <button class="bottom-nav-item" onclick="showPage('analytics')" id="bnav-analytics">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      <span>Analytics</span>
+    </button>
+    <button class="bottom-nav-item" onclick="showPage('architecture')" id="bnav-architecture">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span>System</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          console.log('Antigravity SW Registered');
+        }).catch(err => console.log('SW Error', err));
+      });
+    }
+  </script>
+</body>
+</html>

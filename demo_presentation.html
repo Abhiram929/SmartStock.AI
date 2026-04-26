@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartStock AI | Demo Presentation & Recorder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --demo-accent: #60a5fa;
+    }
+    .demo-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 15, 30, 0.98);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.5s ease;
+    }
+    .demo-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .demo-btn {
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(96, 165, 250, 0.4);
+      margin-top: 2rem;
+      transition: transform 0.2s;
+    }
+    .demo-btn:hover {
+      transform: scale(1.05);
+    }
+    .demo-btn.recording {
+      background: #f87171;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(248, 113, 113, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+    }
+    .subtitle {
+      color: #94a3b8;
+      margin-top: 1rem;
+      max-width: 600px;
+    }
+    .highlight-ring {
+      position: absolute;
+      border: 4px solid var(--demo-accent);
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow: 0 0 0 1000vw rgba(0,0,0,0.6);
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+      opacity: 0;
+    }
+    .highlight-ring.active {
+      opacity: 1;
+    }
+    .caption-box {
+      position: fixed;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 2.5rem;
+      border-radius: 20px;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 500;
+      max-width: 80%;
+      border-left: 6px solid var(--demo-accent);
+      z-index: 10001;
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .caption-box.active {
+      opacity: 1;
+    }
+    .demo-cursor {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: url('https://cdn-icons-png.flaticon.com/512/1004/1004724.png') no-repeat center;
+      background-size: contain;
+      z-index: 10002;
+      pointer-events: none;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+      opacity: 0;
+    }
+    .recorder-status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(248, 113, 113, 0.9);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 10003;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .recorder-status.active { display: flex; }
+    .rec-dot { width: 10px; height: 10px; background: white; border-radius: 50%; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <!-- EMBEDDED INDEX.HTML CONTENT START -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" stroke="url(#grad1)" stroke-width="2"/>
+            <path d="M12 28L20 12L28 28" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.5 23H25.5" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#60a5fa"/>
+                <stop offset="100%" stop-color="#a78bfa"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="0" y1="0" x2="40" y2="0">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-name">SmartStock <span class="brand-ai">AI</span></span>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#dashboard" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
+        <a href="#predict" class="nav-link" onclick="showPage('predict')">Predictor</a>
+        <a href="#analytics" class="nav-link" onclick="showPage('analytics')">Analytics</a>
+        <a href="#architecture" class="nav-link" onclick="showPage('architecture')">Architecture</a>
+      </div>
+      <div class="nav-right">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Antigravity Live</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page active" id="page-dashboard">
+    <section class="hero">
+      <div class="hero-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="grid-overlay"></div></div>
+      <div class="hero-content">
+        <div class="hero-badge">Powered by Antigravity + Google Gemma</div>
+        <h1 class="hero-title">AI Inventory<br/><span class="gradient-text">Predictions</span><br/>at the Speed of Light</h1>
+        <p class="hero-subtitle">SmartStock AI uses the three-tier Antigravity architecture to deliver real-time inventory insights for small businesses.</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="showPage('predict')">Start Predicting</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="dashboard-preview">
+          <div class="preview-header"><span class="preview-title">Live Inventory Feed</span></div>
+          <div class="preview-chart" id="miniChart"></div>
+          <div class="preview-items">
+            <div class="preview-item"><span class="item-dot green"></span>Rice (50kg) — Restock in 3 days</div>
+            <div class="preview-item"><span class="item-dot yellow"></span>Sugar (20kg) — Low Stock Alert</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="page-predict">
+    <div class="page-container">
+      <div class="page-header"><h1>Inventory <span class="gradient-text">Predictor</span></h1></div>
+      <div class="predictor-grid">
+        <div class="predictor-form card">
+          <div class="form-group"><label>Product Name</label><input type="text" id="productName" class="form-input" value="Basmati Rice"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Current Stock</label><input type="number" id="currentStock" class="form-input" value="12"></div>
+            <div class="form-group"><label>Daily Sales</label><input type="number" id="dailySales" class="form-input" value="4"></div>
+          </div>
+          <div class="form-group"><label>Additional Context</label><textarea id="context" class="form-input form-textarea">Upcoming festival next week.</textarea></div>
+          <button class="btn-primary full-width" id="predictBtn" onclick="runPrediction()">Run AI Prediction</button>
+        </div>
+        <div class="predictor-output">
+          <div class="pipeline-card card">
+            <h3>⚡ Antigravity Pipeline</h3>
+            <div class="pipeline-steps">
+                <div class="pipe-step" id="pipe1"><div class="pipe-info"><div class="pipe-name">Cleaning</div><div class="pipe-status" id="pipe1-status">Waiting...</div></div></div>
+                <div class="pipe-step" id="pipe2"><div class="pipe-info"><div class="pipe-name">Formatting</div><div class="pipe-status" id="pipe2-status">Waiting...</div></div></div>
+                <div class="pipe-step" id="pipe3"><div class="pipe-info"><div class="pipe-name">Bridge</div><div class="pipe-status" id="pipe3-status">Waiting...</div></div></div>
+                <div class="pipe-step" id="pipe4"><div class="pipe-info"><div class="pipe-name">Gemma</div><div class="pipe-status" id="pipe4-status">Waiting...</div></div></div>
+            </div>
+            <div class="latency-bar"><div class="latency-track"><div class="latency-fill" id="latencyFill"></div></div><span id="latencyValue">-- ms</span></div>
+          </div>
+          <div class="result-card card" id="resultCard">
+            <div class="result-content" id="resultContent" style="display:none">
+                <h3 id="predictionHighlight">Result Loading...</h3>
+                <p id="predictionText"></p>
+                <button class="btn-small" onclick="addToInventory()">+ Add to Inventory</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-analytics">
+    <div class="page-container">
+        <h1>Business <span class="gradient-text">Analytics</span></h1>
+        <div class="analytics-grid">
+            <div class="metric-card card"><div class="metric-value" id="totalItems">0</div><div class="metric-label">Items Tracked</div></div>
+            <div class="metric-card card"><div class="metric-value" id="healthyItems">0</div><div class="metric-label">Healthy</div></div>
+        </div>
+        <div class="charts-grid">
+            <div class="chart-card card"><canvas id="stockChart" width="400" height="220"></canvas></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-architecture">
+    <div class="page-container">
+        <h1>System <span class="gradient-text">Architecture</span></h1>
+        <div class="arch-layers">
+            <div class="arch-layer">Intelligence (Gemma)</div>
+            <div class="arch-layer">Orchestration (Antigravity)</div>
+            <div class="arch-layer">Interface (Flutter/Web)</div>
+        </div>
+    </div>
+  </div>
+  <!-- EMBEDDED INDEX.HTML CONTENT END -->
+
+  <div class="demo-overlay" id="demoOverlay">
+    <div class="brand-name" style="font-size: 3.5rem; margin-bottom: 0.5rem; color: white;">SmartStock <span style="color: #60a5fa;">AI</span></div>
+    <h1 style="color: white; font-size: 2.2rem; margin-bottom: 1rem;">Demo Presentation & Recorder</h1>
+    <p class="subtitle">This tool will record your screen with AI voiceover and save it to your Downloads. Once finished, please move it to the <b>mvp</b> folder.</p>
+    <div style="display: flex; gap: 1rem;">
+        <button class="demo-btn" onclick="startDemo()">Start Demo Walkthrough</button>
+        <button class="demo-btn" style="background: #111827; border: 2px solid #60a5fa;" onclick="startRecording()">Record Full Video</button>
+    </div>
+  </div>
+
+  <div class="highlight-ring" id="highlightRing"></div>
+  <div class="caption-box" id="captionBox"></div>
+  <div class="demo-cursor" id="demoCursor"></div>
+  <div class="recorder-status" id="recorderStatus"><div class="rec-dot"></div> RECORDING TAB...</div>
+
+  <script src="app.js"></script>
+  <script>
+    const demoSteps = [
+      { action: () => showPage('dashboard'), caption: "Welcome to SmartStock AI, the ultimate inventory predictor for small businesses.", duration: 5000, highlight: '.hero-title' },
+      { caption: "Built on the Antigravity framework, our solution delivers enterprise-grade AI insights at ultra-low latency.", duration: 6000, highlight: '.hero-badge' },
+      { action: () => showPage('predict'), caption: "Let's head over to the Predictor to see the power of Google's Gemma AI in action.", duration: 5000, highlight: '#navLinks a[href="#predict"]' },
+      { action: () => {
+          document.getElementById('productName').value = 'Premium Basmati Rice';
+          document.getElementById('currentStock').value = '8';
+          document.getElementById('dailySales').value = '3';
+        }, caption: "We enter our inventory data. Antigravity ensures everything is clean and ready for the AI.", duration: 6000, highlight: '.predictor-form' },
+      { action: () => runPrediction(), caption: "Watch the Antigravity Pipeline. It cleans and routes data to Gemma in real-time.", duration: 8000, highlight: '.pipeline-card', target: '#predictBtn' },
+      { caption: "Gemma provides a strategic recommendation to restock immediately for the upcoming demand.", duration: 7000, highlight: '#resultCard' },
+      { action: () => addToInventory(), caption: "We can instantly add this to our inventory dashboard for live tracking.", duration: 5000, highlight: '.result-content button', click: true },
+      { action: () => showPage('analytics'), caption: "Our Analytics provide real-time insights into your business health.", duration: 6000, highlight: '#navLinks a[href="#analytics"]' },
+      { action: () => showPage('architecture'), caption: "Powered by a three-tier architecture: Intelligence, Orchestration, and Interface.", duration: 6000, highlight: '.arch-layers' },
+      { caption: "SmartStock AI: Innovation at the speed of light. Thank you!", duration: 5000, highlight: '.brand-name' }
+    ];
+
+    let currentStep = 0;
+    const synth = window.speechSynthesis;
+    const ring = document.getElementById('highlightRing');
+    const caption = document.getElementById('captionBox');
+    const cursor = document.getElementById('demoCursor');
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    async function startRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: "always" }, audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: "video/webm" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "smartstock_demo_video.webm";
+          a.click();
+          alert("Recording saved to Downloads! Please move 'smartstock_demo_video.webm' to the 'mvp' folder.");
+        };
+        mediaRecorder.start();
+        document.getElementById('recorderStatus').classList.add('active');
+        startDemo();
+      } catch (err) {
+        alert("Recording failed. Please grant permission to record screen and audio.");
+      }
+    }
+
+    async function startDemo() {
+      document.getElementById('demoOverlay').classList.add('hidden');
+      await new Promise(r => setTimeout(r, 1000));
+      runStep();
+    }
+
+    function moveCursor(selector) {
+      const el = document.querySelector(selector);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        cursor.style.top = (rect.top + window.scrollY + rect.height / 2) + 'px';
+        cursor.style.left = (rect.left + rect.width / 2) + 'px';
+        cursor.style.opacity = '1';
+      }
+    }
+
+    function highlightElement(selector) {
+      const el = document.querySelector(selector);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        ring.style.top = (rect.top + window.scrollY - 15) + 'px';
+        ring.style.left = (rect.left - 15) + 'px';
+        ring.style.width = (rect.width + 30) + 'px';
+        ring.style.height = (rect.height + 30) + 'px';
+        ring.classList.add('active');
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        ring.classList.remove('active');
+      }
+    }
+
+    function runStep() {
+      if (currentStep >= demoSteps.length) {
+        cursor.style.opacity = '0';
+        ring.classList.remove('active');
+        caption.classList.remove('active');
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+        document.getElementById('recorderStatus').classList.remove('active');
+        setTimeout(() => { document.getElementById('demoOverlay').classList.remove('hidden'); currentStep = 0; }, 1000);
+        return;
+      }
+
+      const step = demoSteps[currentStep];
+      if (step.action) step.action();
+      if (step.highlight) {
+        highlightElement(step.highlight);
+        moveCursor(step.target || step.highlight);
+      }
+
+      if (step.caption) {
+        caption.textContent = step.caption;
+        caption.classList.add('active');
+        const utterance = new SpeechSynthesisUtterance(step.caption);
+        utterance.rate = 0.9;
+        synth.speak(utterance);
+      }
+
+      setTimeout(() => {
+        currentStep++;
+        runStep();
+      }, step.duration);
+    }
+
+    window.onload = () => {
+      if (window.animateCounters) animateCounters();
+      if (window.drawMiniChart) drawMiniChart();
+    };
+  </script>
+</body>
+</html>

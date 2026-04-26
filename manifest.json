@@ -1,0 +1,16 @@
+{
+  "name": "SmartStock AI",
+  "short_name": "SmartStock",
+  "description": "AI-powered inventory prediction using Antigravity framework.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a0f1e",
+  "theme_color": "#60a5fa",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2897/2897782.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
